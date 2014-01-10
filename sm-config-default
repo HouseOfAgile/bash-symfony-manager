@@ -1,0 +1,30 @@
+# sample config file
+# application_install_path : path of the installed symfony application, can be relative
+application_install_path="."
+
+# application_install_path : symfony environment type
+application_install_env="dev"
+
+# application_projectname : Project name for verbose info mainly
+application_projectname="hypopo"
+
+# application_scmtool : name of the scm tool used, currently git and svn supported 
+application_scmtool="git"
+
+# application_scmurl : Main scm url
+application_scmurl="svn://to_be_defined"
+
+#application_scmversion : scm version, might be a tag, or a branch too, or a version.
+application_scmversion="master"
+
+# application_install_user : user used for the installation process
+application_install_user=$USER
+
+# application_deployment_user : User used for the deployment, typically, www-data
+application_deployment_user="www-data"
+
+# application_bundles : List of bundles of the application
+application_bundles=( "JMeyo/CoreBundle" )
+
+# application_bundles : List of bundles which contains Behat test we want to test for the application
+application_behat=( "JMeyo/CoreBundle" )

@@ -1,0 +1,22 @@
+{
+    "name": "jmeyo/basm",
+    "type": "script",
+    "description": "Bash Advanced Symfony Manager",
+    "keywords": ["installer","symfony"],
+    "homepage": "http://github.com/jmeyo/BASM",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jean-Christophe Meillaud",
+            "email": "jc@poumtchi.com",
+            "homepage": "http://poumtchi.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
