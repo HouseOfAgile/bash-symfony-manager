@@ -5,20 +5,7 @@
 #  - support git
 #  - more install options
 
-#set -e
-
-set -o pipefail  # trace ERR through pipes
-set -o errtrace  # trace ERR through 'time command' and other functions
-
-function error() {
-    JOB="$0"              # job name
-    LASTLINE="$1"         # line of error occurrence
-    LASTERR="$2"          # error code
-    #echo "ERROR in ${JOB} : line ${LASTLINE} with exit code ${LASTERR}"
-    cecho "Stopping  "`basename $0` $red
-    exit 1
-}
-trap 'error ${LINENO} ${?}' ERR
+source <(curl -s https://raw.github.com/jmeyo/CommonBashScripts/master/common_functions.sh)
 
 declare -a MYACTIONS
 
@@ -27,58 +14,15 @@ default_projectname=""
 default_scmtool="git"
 default_scmurl=""
 default_scmversion=""
-default_install_path="."
+default_install_path="/home/$USER/"
 default_install_env="prod"
 default_deployment_user="www-data"
 default_install_user=$USER
 default_bundles=""
 default_behat=""
 
-black='\E[30;47m'
-red='\E[31;47m'
-green='\E[32;47m'
-yellow='\E[33;47m'
-blue='\E[34;47m'
-magenta='\E[35;47m'
-cyan='\E[36;47m'
-white='\E[37;47m'
-
-resetcolor='\e[0m'      
-# Text Reset
-
 sm_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-trap ctrl_c INT
-
-function ctrl_c() {
-	echo
-	cecho "Halting  "`basename $0` $red
-	exit 0;
-}
-cecho ()                    
-# cecho.
-# Argument $1 = message
-# Argument $2 = color
-{
-	local default_msg="No message passed."
-	message=${1:-$default_msg}   # Defaults to default message.
-	color=${2:-$black}           # Defaults to black, if not specified.
-	echo -e "$color-> $message $resetcolor"
-}
-
-confirm () {
-	if $FORCE; then echo "1";return;fi;
-    q=$(cecho "${1:-Doing some stuff} \n-> Are you sure? [Y/n]")
-    read -r -p "$q" response
-    case $response in
-        [yY][eE][sS]|[yY]) 
-            echo "1"
-            ;;
-        *)
-            echo "0"
-            ;;
-    esac
-}
 
 help()
 {
