@@ -54,8 +54,8 @@ help()
 
 check_needed_tools()
 {
-	[ "$application_scmtool" == "svn" ] && command -v svn >/dev/null 2>&1 || { sudo apt-get install subversion; }
-	[ "$application_scmtool" == "git" ] && command -v git >/dev/null 2>&1 || { sudo apt-get install git; }
+	[ "$application_scmtool" == "svn" ] && ( command -v svn >/dev/null 2>&1 || { sudo apt-get install subversion; })
+	[ "$application_scmtool" == "git" ] && ( command -v git >/dev/null 2>&1 || { sudo apt-get install git; })
 	locate composer.phar >/dev/null 2>&1 || install_composer
 }
 
@@ -248,7 +248,7 @@ launch_behat_test()
 
 install_composer()
 {
-	command -v curl >/dev/null 2>&1 && { exit 0; } || { sudo apt-get install curl; }	
+	command -v curl >/dev/null 2>&1 || { sudo apt-get install curl; }	
 	curl -s https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin
 }
 
