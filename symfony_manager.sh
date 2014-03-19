@@ -54,8 +54,8 @@ help()
 
 check_needed_tools()
 {
-	command -v svn >/dev/null 2>&1 || { sudo apt-get install subversion; }
-	command -v git >/dev/null 2>&1 || { sudo apt-get install git; }
+	[ "$application_scmtool" == "svn" ] && command -v svn >/dev/null 2>&1 || { sudo apt-get install subversion; }
+	[ "$application_scmtool" == "git" ] && command -v git >/dev/null 2>&1 || { sudo apt-get install git; }
 	locate composer.phar >/dev/null 2>&1 || install_composer
 }
 
