@@ -1,8 +1,10 @@
+#!/bin/bash
+
 # sample config file
 # application_install_path : path of the installed symfony application, can be relative
-application_install_path="."
+application_install_path="/home/$USER/"
 
-# application_install_path : symfony environment type
+# application_install_env : symfony environment type
 application_install_env="dev"
 
 # application_projectname : Project name for verbose info mainly
