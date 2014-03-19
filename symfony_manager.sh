@@ -142,11 +142,11 @@ getcode ()
             case $application_scmtool in
 				"git")
 					cecho "Cloning git repository"
-					git clone $application_scmurl .
+					git clone $application_scmurl . || error "Can't clone that git repository"
 				;; 
 				"svn")
 					cecho "Checkout svn repository"
-					svn co $application_scmurl/$application_scmversion .
+					svn co $application_scmurl/$application_scmversion . || error "Can't checkout that svn repository"
 				;;
 				esac
             ;;
