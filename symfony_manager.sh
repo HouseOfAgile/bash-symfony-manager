@@ -5,7 +5,7 @@
 #  - support git
 #  - more install options
 
-source <(curl -s https://raw.github.com/jmeyo/CommonBashScripts/master/common_functions.sh)
+source <(curl -sSL https://raw.github.com/jmeyo/CommonBashScripts/master/common_functions.sh)
 
 declare -a MYACTIONS
 
