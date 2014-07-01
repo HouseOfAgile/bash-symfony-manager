@@ -7,14 +7,20 @@ Simple tool to manage your Symfony Project
 
 Install
 =======
+
+## Manual installation
+
 Mainly clone the github repository in your desired directory
 
     mkdir -p ~/work/tools/BASM
     git clone https://github.com/jmeyo/BASM ~/work/tools/BASM
 
+## Automatic installation
 
+You can integrate symfony manager by updating your bash profile based on [that gist](https://gist.github.com/jmeyo/9514322) which should setup a symfony manager within your bash. In order to integrate smoothly with your bash instance, you should have a look to [beaudev bash profile tool](https://github.com/beaudev/bash-profile) which load this gist in any bash instance.
 
-{% gist 9514322 %}
+You will then be able to add configuration  file in your `sm_path` and then have access to symfony manager preconfigured command lines.
+
 
 Usage
 =====
