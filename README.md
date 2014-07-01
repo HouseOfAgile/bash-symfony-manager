@@ -12,6 +12,10 @@ Mainly clone the github repository in your desired directory
     mkdir -p ~/work/tools/BASM
     git clone https://github.com/jmeyo/BASM ~/work/tools/BASM
 
+
+
+{% gist 9514322 %}
+
 Usage
 =====
 Launch it like a simple script.
@@ -41,23 +45,26 @@ Then use it like :
 		 - install: install database from scratch (drop everything first)
 		 - update: update the database
 		 - none: do not update the database
-	   -u reinstall|update|none: Update a version of the application with option for the database : 
 	   -v <svn_version> : Set svn tag/version
-	   -w : Generate and watch assets
+	   -w : Generate and then watch assets
 	   -y : Update database
 	   -z : Update Symfony Manager
-       You can mix those option together
+       
 
+You can mix those option together :
 
-    
-    
+```{bash}
 	$ sm -casf 
-	// clear cache, copy assets, install database with fixtures, and force the question to preferable answer 
-    
+	# clear cache AND 
+	# copy assets AND
+	# install database with fixtures AND 
+	# force the question to preferable answer
+```
+
 About configuration
 ===================
 
-Its possible to load a configuration from several places. 
+It is possible to load a configuration from several places. 
 
 Either through the -f option, to link with a specific file, or if you just want to work on a specific project, just put a "sm-config-<project_name>" file in your home directory (you can prefix it with a dot to hide it). A sample "sm-config-default" can be found in the default BASM directory
 
@@ -68,7 +75,7 @@ Check [sm-config-default](https://github.com/jmeyo/BASM/blob/master/sm-config-de
 Best Practice
 =============
 
-This simple manager gives you the ability to never lose anymore time with annoying symony commands, as it takes care of rights ;)
+This simple manager gives you the ability to lose less time with annoying symfony commands, as it takes care of rights ;)
 A good way of using it for several projects might be to define several alias, with different config file and store them in a common directory (for example /home/user/work/config-tools/sm-config). 
 
 With bash, you could add something like that in the ~/.bash_aliases file to parse that directory and add alias for your projects automatically for both the symony manager (starting with sm_ and the <project_name>) and a shortcut to the home of the project (starting by po_ and the <project_name>)
@@ -86,50 +93,10 @@ With bash, you could add something like that in the ~/.bash_aliases file to pars
 		alias po_$project_name="cd $project_path"
 	done
 	
-I tend to prefix my configuraiton files with sm-config-<project_name>, but this is not mandatory, and the alias shortcut will be sm_<project_name> <OPTIONS>
-
-
-Integrate with Composer
-=======================
-
-1)Define a repository, as BASM is not yet in Packagist
-```
-    "repositories": [
-    {
-        "type": "package",
-        "package": {
-            "version": "master",
-            "name": "jmeyo/BASM",
-            "source": {
-                "url": "https://github.com/jmeyo/BASM",
-                "type": "git",
-                "reference": "master"
-            },
-            "dist": {
-                "url": "https://github.com/jmeyo/BASM/zipball/master",
-                "type": "zip"
-            }
-        }
-    }
-    ],
-```  
-
-2) Add the following line to your Symfony2 composer.json file:
-
-	{
-		"require": {
-			/* other libs */
-			"jmeyo/BASM": "dev-master"
-		}
-	}
-
-3) Update composer
-	php /usr/local/bin/composer.phar update
-
-You can know add an alias to the symfony_manager inside your project. It will then be updated hen you update your project with composer.
+I tend to prefix my configuration files with sm-config-<project_name>, but this is not mandatory, and the alias shortcut will be sm_<project_name> <OPTIONS>
 
 
 Improve the Symfony Manager
 ===========================
 
-I use this script on many of my symfony projects, thus I tend to update it as much as possible. It's still pure bash script, but it's quite stable, and I would love to have any improvement propositions ;)
+I use this script on many of my symfony projects, thus I tend to update it as much as possible. It's still pure bash script, but it's quite stable, and I would love to have any improvement propositions through well documented PR ;)
