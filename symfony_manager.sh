@@ -5,7 +5,11 @@
 #  - support git
 #  - more install options
 
-source <(curl -sSL https://raw.github.com/jmeyo/CommonBashScripts/master/common_functions.sh)
+com_func_file=$( dirname "${BASH_SOURCE[0]}" )/common_functions.sh
+if [ ! -f ${com_func_file} ]; then
+	curl -sSL https://raw.github.com/jmeyo/CommonBashScripts/master/common_functions.sh >${com_func_file}	
+fi
+source ${com_func_file}
 
 declare -a MYACTIONS
 
@@ -62,16 +66,16 @@ check_needed_tools()
 clear_cache ()
 {
 	cecho "Clear cache and logs" $red
-	sudo rm -rf ${install_path}/app/cache/*
-	sudo rm -rf ${install_path}/app/logs/*
+	sudo rm -rf ${install_app_path}/cache/*
+	sudo rm -rf ${install_app_path}/logs/*
 	cecho "Clear cache done"
 }
 set_working_rights()
 {
 	user=${1:-$depl_user}
-	if [ -d "${install_path}/app/cache" -a -d "${install_path}/app/logs" ]; then
-		sudo chown -R $user.$install_user ${install_path}/app/cache ${install_path}/app/logs
-		sudo chmod -R 775 ${install_path}/app/cache ${install_path}/app/logs
+	if [ -d "${install_app_path}/cache" -a -d "${install_app_path}/logs" ]; then
+		sudo chown -R $user.$install_user ${install_app_path}/{cache,logs}
+		sudo chmod -R 775 ${install_app_path}/{cache,logs}
 	fi
 }
 install_assets()
@@ -255,7 +259,7 @@ install_composer()
 watch_assets()
 {
 	set_working_rights $depl_user
-	php ${install_path}/app/console assetic:dump --env=$install_env --watch
+	php ${install_path}/app/console assetic:watch --env=$install_env
 }
 
 setup_conf()
@@ -290,6 +294,13 @@ setup_conf()
 		install_path=$MYPATH
 	else 
 		install_path=${application_install_path:-$default_install_path}
+	fi
+
+	# Setup symfony path
+	if [ ! -z "$install_path/var" ]; then
+		install_app_path=$install_path/var
+	else 
+		install_app_path=$install_path/app
 	fi
 	
 	# Setup install_env
