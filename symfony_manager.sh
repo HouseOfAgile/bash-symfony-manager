@@ -82,8 +82,8 @@ install_assets()
 {
 	cecho "Install and dump assets"
 	cd $install_path
-	php ${install_path}/app/console assets:install web --env=$install_env --symlink
-	php ${install_path}/app/console assetic:dump --env=$install_env
+	php ${application_console_path} assets:install web --env=$install_env --symlink
+	php ${application_console_path} assetic:dump --env=$install_env
 	cecho "Assets installed"
 }
 
@@ -108,28 +108,28 @@ manage_database()
 
 	if [ $1 == "install" ]; then
 		# hack to ignore error for already existing acl tables
-		php app/console doctrine:database:drop --force --env="$install_env" || true
-		php app/console doctrine:database:create --env="$install_env"	
+		php ${application_console_path} doctrine:database:drop --force --env="$install_env" || true
+		php ${application_console_path} doctrine:database:create --env="$install_env"	
 	fi
 	
-	php app/console doctrine:schema:update --env="$install_env" --force
+	php ${application_console_path} doctrine:schema:update --env="$install_env" --force
 	if  [ $(confirm "Do you want to generate acl tables") == 1 ]; then
 		# hack to ignore error for already existing acl tables
-		php app/console init:acl --env="$install_env" || true
+		php ${application_console_path} init:acl --env="$install_env" || true
 		
 	fi
 	
 	#add initial fixtures from all vendor packages
 	if  [ $(confirm "Do you want to not load all fixtures from vendor packages") == 0 ] ; then
 		${FORCE} && opt="-n"
-		php app/console doctrine:fixtures:load --env="$install_env" $opt
+		php ${application_console_path} doctrine:fixtures:load --env="$install_env" $opt
 	fi
 	#add environment specific fixtures
 	for bundle in "${application_bundles[@]}"
     do
 		for fixture_env in "ORM" $install_typenv;do
 			if [ -d ./src/$bundle/DataFixtures/$fixture_env ]; then
-				php app/console doctrine:fixtures:load --append --env="$install_env" --fixtures=./src/$bundle/DataFixtures/$fixture_env
+				php ${application_console_path} doctrine:fixtures:load --append --env="$install_env" --fixtures=./src/$bundle/DataFixtures/$fixture_env
 			else
 				cecho "No fixtures in ./src/$bundle/DataFixtures/$fixture_env" $blue
 			fi
@@ -259,7 +259,7 @@ install_composer()
 watch_assets()
 {
 	set_working_rights $depl_user
-	php ${install_path}/app/console assetic:watch --env=$install_env
+	php ${application_console_path} assetic:watch --env=$install_env
 }
 
 setup_conf()
@@ -277,6 +277,18 @@ setup_conf()
 	application_projectname=${application_projectname:-$default_projectname}
 	application_scmurl=${application_scmurl:-$default_scmurl}
 	application_scmtool=${application_scmtool:-$default_scmtool}
+	application_symfony_version=${application_symfony_version:-2}
+
+	# Setup symfony path depending on symfony version structure
+	if [ "$application_symfony_version" -eq 3 ]; then
+		application_console_path=${install_path}/bin/console
+		install_app_path=${install_path}/var
+	else
+		application_console_path=${install_path}/app/console
+		install_app_path=${install_path}/app
+
+	fi
+
 	[ "$application_scmtool" == "git" -o "$application_scmtool" == "svn" ] || (cecho "SCM tool not supported : $application_scmtool" $red && exit 0)
 	
 	application_bundles=${application_bundles:-$default_bundles}
@@ -294,13 +306,6 @@ setup_conf()
 		install_path=$MYPATH
 	else 
 		install_path=${application_install_path:-$default_install_path}
-	fi
-
-	# Setup symfony path
-	if [ ! -z "$install_path/var" ]; then
-		install_app_path=$install_path/var
-	else 
-		install_app_path=$install_path/app
 	fi
 	
 	# Setup install_env

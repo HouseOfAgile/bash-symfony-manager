@@ -16,7 +16,7 @@ Usage
 =====
 Launch it like a simple script.
 
-For simple use add it to your path, or better, add a alias (in ~/.bash_aliases for example)
+For simple use add it to your path, or better, add an alias (in ~/.bash_aliases for example)
 
     alias sm="~/work/tools/BASM/symfony_manager.sh"
 
