@@ -279,6 +279,13 @@ setup_conf()
 	application_scmtool=${application_scmtool:-$default_scmtool}
 	application_symfony_version=${application_symfony_version:-2}
 
+	# Setup install_path
+	if [ ! -z "$MYPATH" ]; then
+		install_path=$MYPATH
+	else 
+		install_path=${application_install_path:-$default_install_path}
+	fi
+	
 	# Setup symfony path depending on symfony version structure
 	if [ "$application_symfony_version" -eq 3 ]; then
 		application_console_path=${install_path}/bin/console
@@ -301,12 +308,7 @@ setup_conf()
 		application_scmversion=${application_scmversion:-$default_scmversion}
 	fi
 	
-	# Setup install_path
-	if [ ! -z "$MYPATH" ]; then
-		install_path=$MYPATH
-	else 
-		install_path=${application_install_path:-$default_install_path}
-	fi
+
 	
 	# Setup install_env
 	if [ ! -z "$MYENV" ]; then
