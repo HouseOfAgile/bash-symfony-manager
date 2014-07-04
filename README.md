@@ -106,3 +106,10 @@ Improve the Symfony Manager
 ===========================
 
 I use this script on many of my symfony projects, thus I tend to update it as much as possible. It's still pure bash script, but it's quite stable, and I would love to have any improvement propositions through well documented PR ;)
+
+
+
+Some Ideas and Todo
+===================
+* Better handle errors
+
