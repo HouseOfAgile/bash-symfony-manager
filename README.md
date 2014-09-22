@@ -13,7 +13,7 @@ Install
 Mainly clone the github repository in your desired directory
 
     mkdir -p ~/work/tools/BASM
-    git clone https://github.com/jmeyo/BASM ~/work/tools/BASM
+    git clone https://github.com/jmeyo/dacorp-symfony-manager.git ~/work/tools/BASM
 
 ## Automatic installation
 
