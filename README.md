@@ -112,4 +112,5 @@ I use this script on many of my symfony projects, thus I tend to update it as mu
 Some Ideas and Todo
 ===================
 * Better handle errors
+* Integrate extract translation commands from JMS 
 
