@@ -74,7 +74,7 @@ set_working_rights()
 {
 	user=${1:-$depl_user}
 	if [ -d "${install_app_path}/cache" -a -d "${install_app_path}/logs" ]; then
-		sudo chown -R $user.$install_user ${install_app_path}/{cache,logs}
+		sudo chown -R $user:$install_user ${install_app_path}/{cache,logs}
 		sudo chmod -R 775 ${install_app_path}/{cache,logs}
 	fi
 }
