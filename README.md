@@ -1,7 +1,5 @@
-BASM
-====
-
 Bash Advanced Symfony Manager
+====
 
 Simple tool to manage your Symfony Project
 
@@ -113,4 +111,5 @@ Some Ideas and Todo
 ===================
 * Better handle errors
 * Integrate extract translation commands from JMS 
+* Integrate phpcr init and operation support
 
