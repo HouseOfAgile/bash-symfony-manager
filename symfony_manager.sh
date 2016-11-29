@@ -58,26 +58,28 @@ help()
 
 check_needed_tools()
 {
-	[ "$application_scmtool" == "svn" ] && ( command -v svn >/dev/null 2>&1 || { sudo apt-get install subversion; })
-	[ "$application_scmtool" == "git" ] && ( command -v git >/dev/null 2>&1 || { sudo apt-get install git; })
+	[ "$application_scmtool" == "svn" ] && ( command -v svn >/dev/null 2>&1 || { $_sudo apt-get install subversion; })
+	[ "$application_scmtool" == "git" ] && ( command -v git >/dev/null 2>&1 || { $_sudo apt-get install git; })
 	locate composer.phar >/dev/null 2>&1 || install_composer
 }
 
 clear_cache ()
 {
 	cecho "Clear cache and logs" $red
-	sudo rm -rf ${install_app_path}/cache/*
-	sudo rm -rf ${install_app_path}/logs/*
+	$_sudo rm -rf ${install_app_path}/cache/*
+	$_sudo rm -rf ${install_app_path}/logs/*
 	cecho "Clear cache done"
 }
+
 set_working_rights()
 {
 	user=${1:-$depl_user}
 	if [ -d "${install_app_path}/cache" -a -d "${install_app_path}/logs" ]; then
-		sudo chown -R $user:$install_user ${install_app_path}/{cache,logs}
-		sudo chmod -R 775 ${install_app_path}/{cache,logs}
+		$_sudo chown -R $user:$install_user ${install_app_path}/{cache,logs}
+		$_sudo chmod -R 775 ${install_app_path}/{cache,logs}
 	fi
 }
+
 install_assets()
 {
 	cecho "Install and dump assets"
@@ -90,7 +92,7 @@ install_assets()
 
 check_needed_apps()
 {
-	command -v less >/dev/null 2>&1 || { sudo apt-get update;sudo apt-get install npm;sudo npm install less -g; }
+	command -v less >/dev/null 2>&1 || { $_sudo apt-get update;$_sudo apt-get install npm;$_sudo npm install less -g; }
 }
 
 install_database()
@@ -218,12 +220,12 @@ install_phpunit()
 {
 	command -v phpunit >/dev/null 2>&1 && { return; } || { cecho "Trying to install phpunit" $red >&2;  }	
 	# test and/or install pear
-	command -v pear >/dev/null 2>&1 || { cecho "I require pear but it's not installed. lets install that shit." >&2;sudo apt-get install php-pear;}	
-	sudo apt-get install phpunit
-	sudo pear channel-discover pear.phpunit.de
-	sudo pear channel-discover components.ez.no
-	sudo pear install --force --alldeps phpunit/PHPUnit
-	sudo apt-get install php5-xdebug
+	command -v pear >/dev/null 2>&1 || { cecho "I require pear but it's not installed. lets install that shit." >&2;$_sudo apt-get install php-pear;}	
+	$_sudo apt-get install phpunit
+	$_sudo pear channel-discover pear.phpunit.de
+	$_sudo pear channel-discover components.ez.no
+	$_sudo pear install --force --alldeps phpunit/PHPUnit
+	$_sudo apt-get install php5-xdebug
 	cecho "Phpunit might work now" $green 
 }
 
@@ -252,8 +254,8 @@ launch_behat_test()
 
 install_composer()
 {
-	command -v curl >/dev/null 2>&1 || { sudo apt-get install curl; }	
-	curl -s https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin
+	command -v curl >/dev/null 2>&1 || { $_sudo apt-get install curl; }	
+	curl -s https://getcomposer.org/installer | $_sudo php -- --install-dir=/usr/local/bin
 }
 
 watch_assets()
@@ -264,6 +266,15 @@ watch_assets()
 
 setup_conf()
 {
+  if [[ $EUID -eq 0 ]]; then
+    # script is run as root
+    _sudo=""
+  elif ! command -v sudo >/dev/null 2>&1;then
+    cecho "BASM need sudo if not run with user with administration rights" $red && exit 1
+  else 
+    _sudo="sudo"
+  fi
+
 	if [ ! -z "$MYCONF" ]; then
 		[ -f $MYCONF ] && cecho "Loading specific configuration from $MYCONF" $blue && source $MYCONF
 		[ ! -f $MYCONF ] && cecho "Can't find configuration file : $MYCONF in $PWD" $red && exit 0
